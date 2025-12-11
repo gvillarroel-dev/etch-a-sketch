@@ -30,11 +30,68 @@ body {
 	gap: 2rem;
 }
 
+.app__header {
+	width: 100%;
+	height: 120px;
+	background: var(--secondary-color);
+}
+
+.app__title {
+	font-family: var(--font-jaro);
+	letter-spacing: 2px;
+	font-weight: 200;
+	color: var(--frame-color);
+	padding: 0.2rem;
+	text-align: center;
+}
+
+.controls {
+	width: 96%;
+	height: 60px;
+	padding: 1rem;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+}
+
+.controls__section {
+	height: 50px;
+	display: grid;
+	place-content: center;
+}
+
+.controls__section button {
+	width: 100%;
+	padding: 0.6rem;
+	background: var(--frame-color);
+	border: none;
+	border-radius: 5px;
+	color: var(--secondary-color);
+	font-size: clamp(1rem, 2vw, 1.2rem);
+	font-weight: 800;
+	font-family: var(--font-jost);
+
+	cursor: pointer;
+	transition: all 0.3s ease-in;
+}
+
+.controls__section--colors #colorMode {
+	border: 6px solid var(--frame-color);
+	border-radius: 10px;
+}
+
+.controls__section button:hover {
+	color: var(--frame-color);
+	background: var(--hover-color);
+}
+
 .etch-sketch {
 	width: 96%;
 	min-height: 80dvh;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	justify-content: center;
 	align-items: center;
 
@@ -43,31 +100,22 @@ body {
 
 .etch-sketch__frame {
 	width: 100%;
-	max-width: 600px;
-	height: 450px;
-	padding: 0px 1rem 1rem;
+	max-width: 900px;
+	height: 50dvh;
+	padding: 1rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
-	margin: 10px auto 5px auto;
+	margin: 10px auto;
 
 	background: var(--primary-color);
-	border-radius: 15px 5px;
-}
-
-.etch-sketch__title {
-	font-family: var(--font-jaro);
-	letter-spacing: 2px;
-	font-weight: 200;
-	color: var(--secondary-color);
-	padding: 0.2rem;
-	text-align: center;
+	border-radius: 15px;
 }
 
 .etch-sketch__screen {
 	width: 100%;
-	height: 90%;
+	height: 100%;
 
 	display: flex;
 	flex-wrap: wrap;
@@ -81,46 +129,6 @@ body {
 .screen__pixel {
 	background: var(--frame-color);
 	font-size: 1rem;
-}
-
-.controls {
-	width: 96%;
-	max-width: 500px;
-	height: 60px;
-	padding: 1rem;
-
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-
-	background: var(--secondary-color);
-	border-radius: 12px;
-}
-
-.controls__section {
-	width: 50px;
-	height: 50px;
-	display: grid;
-	place-content: center;
-}
-
-.controls__section button {
-	padding: 0.6rem 1rem;
-	background: var(--frame-color);
-	border: none;
-	border-radius: 5px;
-	color: var(--secondary-color);
-	font-size: clamp(0.8rem, 2vw, 0.9rem);
-	font-weight: 800;
-	font-family: var(--font-jost);
-
-	cursor: pointer;
-	transition: all 0.3s ease-in;
-}
-
-.controls__section button:hover {
-	color: var(--frame-color);
-	background: var(--hover-color);
 }
 
 .app__footer {
