@@ -71,12 +71,16 @@ body {
 
 	display: flex;
 	flex-wrap: wrap;
-	align-items: center;
-	justify-content: center;
 	aspect-ratio: 1 / 1;
+	overflow: hidden;
 
 	background: var(--frame-color);
 	border-radius: 9px;
+}
+
+.screen__pixel {
+	background: var(--frame-color);
+	font-size: 1rem;
 }
 
 .controls {
