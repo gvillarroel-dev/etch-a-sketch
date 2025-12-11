@@ -8,15 +8,10 @@
 	</head>
 	<body>
 		<main class="app">
-			<section class="etch-sketch">
-				<div class="etch-sketch__frame">
-					<h1 class="etch-sketch__title">Etch a Sketch</h1>
-					<div class="etch-sketch__screen">
-						<!-- the pixels are generated dynamically here -->
-					</div>
-				</div>
-
-				<div class="controls">
+			<header class="app__header">
+				<h1 class="app__title">Etch A Sketch</h1>
+				<section class="app__controls">
+					<div class="controls">
 					<div class="controls__section controls__section--movement">
 						<button id="changeSize" type="button">Change Size</button>
 					</div>
@@ -24,7 +19,22 @@
 						<input id="colorMode" type="color"></input>
 					</div>
 					<div class="controls__section controls__section--actions">
+						<button id="darkenColor" type="button">Darken</button>
+					</div>
+					<div class="controls__section controls__section--actions">
+						<button id="rainbowMode" type="button">Rainbow</button>
+					</div>
+					<div class="controls__section controls__section--actions">
 						<button id="clear" type="button">Clear</button>
+					</div>
+				</div>
+				</section>
+			</header>
+
+			<section class="etch-sketch">
+				<div class="etch-sketch__frame">
+					<div class="etch-sketch__screen">
+						<!-- the pixels are generated dynamically here -->
 					</div>
 				</div>
 			</section>
