@@ -1,9 +1,48 @@
 const container = document.querySelector(".etch-sketch__screen");
 const clear = document.querySelector("#clear");
-const colorMode = document.querySelector("#colorMode");
 const gridMode = document.querySelector("#changeSize");
 
+const colorMode = document.querySelector("#colorMode");
+const rainbowMode = document.querySelector("#rainbowMode");
+const darkenMode = document.querySelector("#darkenColor");
+
 let squares = [];
+let currentColorMode = "classic";
+
+const getRandomColor = () => {
+	const red = Math.floor(Math.random() * 256);
+	const green = Math.floor(Math.random() * 256);
+	const blue = Math.floor(Math.random() * 256);
+
+	return `rgb(${red}, ${green}, ${blue})`;
+};
+
+const handlerColor = (e) => {
+	const square = e.target;
+
+	if (currentColorMode === "controlled") {
+		square.style.backgroundColor = colorMode.value;
+		square.style.transitionDuration = "0.3s";
+		square.style.opacity = 1;
+	} else if (currentColorMode === "rainbow") {
+		square.style.backgroundColor = getRandomColor();
+		square.style.transitionDuration = "0.3s";
+		square.style.opacity = 1;
+	} else if (currentColorMode === "darken") {
+		let currentOpacity = Number(square.style.opacity);
+		if (!square.style.opacity) {
+			currentOpacity = 0;
+			square.style.backgroundColor = "#000";
+		}
+		if (currentOpacity < 1) {
+			square.style.opacity = currentOpacity + 0.1;
+		}
+	} else {
+		square.style.backgroundColor = colorMode.value;
+		square.style.transitionDuration = "0.3s";
+		square.style.opacity = 1;
+	}
+};
 
 const createGrid = (size) => {
 	const totalSquares = size * size;
@@ -19,10 +58,7 @@ const createGrid = (size) => {
 		square.style.width = `${squarePercentage}%`;
 		square.style.height = `${squarePercentage}%`;
 
-		square.addEventListener("mouseover", () => {
-			square.style.transitionDuration = "0.3s";
-			square.style.backgroundColor = colorMode.value;
-		});
+		square.addEventListener("mouseover", handlerColor);
 		container.appendChild(square);
 		squares.push(square);
 	}
@@ -52,6 +88,18 @@ gridMode.addEventListener("click", () => {
 	if (size !== null) {
 		createGrid(size);
 	}
+});
+
+colorMode.addEventListener("click", () => {
+	currentColorMode = "controlled";
+});
+
+rainbowMode.addEventListener("click", () => {
+	currentColorMode = "rainbow";
+});
+
+darkenMode.addEventListener("click", () => {
+	currentColorMode = "darken";
 });
 
 createGrid(16);
