@@ -88,8 +88,8 @@ body {
 }
 
 .etch-sketch {
-	width: 96%;
-	min-height: 80dvh;
+	width: 600px;
+	height: 70dvh;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -101,7 +101,7 @@ body {
 .etch-sketch__frame {
 	width: 100%;
 	max-width: 900px;
-	height: 50dvh;
+	height: 100%;
 	padding: 1rem;
 	display: flex;
 	flex-direction: column;
