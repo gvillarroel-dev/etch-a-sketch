@@ -1,15 +1,14 @@
-const container = document.querySelector(".etch-sketch__screen");
-const clear = document.querySelector("#clear");
-const gridMode = document.querySelector("#changeSize");
+const screenContainer = document.querySelector(".etch-sketch__screen");
+const clearButton = document.querySelector("#clear");
+const changeSizeButton = document.querySelector("#changeSize");
+const colorPicker = document.querySelector("#colorPicker");
+const rainbowButton = document.querySelector("#rainbowButton");
+const darkenButton = document.querySelector("#darkenButton");
 
-const colorMode = document.querySelector("#colorMode");
-const rainbowMode = document.querySelector("#rainbowMode");
-const darkenMode = document.querySelector("#darkenColor");
+let pixels = [];
+let activeColorMode = "picker";
 
-let squares = [];
-let currentColorMode = "classic";
-
-const getRandomColor = () => {
+const generateRandomColor = () => {
 	const red = Math.floor(Math.random() * 256);
 	const green = Math.floor(Math.random() * 256);
 	const blue = Math.floor(Math.random() * 256);
@@ -17,89 +16,99 @@ const getRandomColor = () => {
 	return `rgb(${red}, ${green}, ${blue})`;
 };
 
-const handlerColor = (e) => {
-	const square = e.target;
-
-	if (currentColorMode === "controlled") {
-		square.style.backgroundColor = colorMode.value;
-		square.style.transitionDuration = "0.3s";
-		square.style.opacity = 1;
-	} else if (currentColorMode === "rainbow") {
-		square.style.backgroundColor = getRandomColor();
-		square.style.transitionDuration = "0.3s";
-		square.style.opacity = 1;
-	} else if (currentColorMode === "darken") {
-		let currentOpacity = Number(square.style.opacity);
-		if (!square.style.opacity) {
-			currentOpacity = 0;
-			square.style.backgroundColor = "#000";
-		}
-		if (currentOpacity < 1) {
-			square.style.opacity = currentOpacity + 0.1;
-		}
-	} else {
-		square.style.backgroundColor = colorMode.value;
-		square.style.transitionDuration = "0.3s";
-		square.style.opacity = 1;
+const applyColor = (pixel) => {
+	switch (activeColorMode) {
+		case "picker":
+			pixel.style.backgroundColor = colorPicker.value;
+			pixel.style.opacity = 1;
+			break;
+		case "rainbow":
+			pixel.style.backgroundColor = generateRandomColor();
+			pixel.style.opacity = 1;
+			break;
+		case "darken":
+			let currentOpacity = parseFloat(pixel.style.opacity) || 0;
+			if (currentOpacity === 0) {
+				pixel.style.backgroundColor = "#000";
+			}
+			if (currentOpacity < 1) {
+				pixel.style.opacity = currentOpacity + 0.1;
+			}
+			break;
+		default:
+			pixel.style.backgroundColor = colorPicker.value;
+			pixel.style.opacity = 1;
 	}
+	pixel.style.transitionDuration = "0.3s";
+};
+
+const handlePixelHover = (e) => {
+	const pixel = e.target;
+	applyColor(pixel);
 };
 
 const createGrid = (size) => {
-	const totalSquares = size * size;
-	const squarePercentage = 100 / size;
+	const totalPixels = size * size;
+	const pixelSize = 100 / size;
 
-	container.textContent = "";
-	squares = [];
+	screenContainer.textContent = "";
+	pixels = [];
 
-	for (let i = 0; i < totalSquares; i++) {
-		const square = document.createElement("div");
-		square.classList.add("screen__pixel");
+	for (let i = 0; i < totalPixels; i++) {
+		const pixel = document.createElement("div");
+		pixel.classList.add("screen__pixel");
 
-		square.style.width = `${squarePercentage}%`;
-		square.style.height = `${squarePercentage}%`;
+		pixel.style.width = `${pixelSize}%`;
+		pixel.style.height = `${pixelSize}%`;
 
-		square.addEventListener("mouseover", handlerColor);
-		container.appendChild(square);
-		squares.push(square);
+		pixel.addEventListener("mouseover", handlePixelHover);
+		screenContainer.appendChild(pixel);
+		pixels.push(pixel);
 	}
 };
 
-const changeGridSize = () => {
-	let newSize = prompt("Enter a size of the grid (1-100):");
+const promptGridSize = () => {
+	let userInput = prompt("Enter a size of the grid (1-100):");
 
-	if (newSize === null) return null;
-	newSize = parseInt(newSize);
+	if (userInput === null) return null;
 
-	while (isNaN(newSize) || newSize <= 0 || newSize > 100) {
-		newSize = prompt("Invalid input. Enter a number between 1 and 100:");
-		if (newSize === null) return null;
-		newSize = parseInt(newSize);
+	let size = parseInt(userInput);
+
+	while (isNaN(size) || size <= 0 || size > 100) {
+		userInput = prompt("Invalid input. Enter a number between 1 and 100:");
+		if (userInput === null) return null;
+		size = parseInt(userInput);
 	}
 
-	return newSize;
+	return size;
 };
 
-clear.addEventListener("click", () => {
-	squares.forEach((square) => (square.style.backgroundColor = ""));
-});
+const clearCanvas = () => {
+	pixels.forEach((pixel) => {
+		pixel.style.backgroundColor = "";
+		pixel.style.opacity = "";
+	});
+};
 
-gridMode.addEventListener("click", () => {
-	const size = changeGridSize();
-	if (size !== null) {
-		createGrid(size);
+clearButton.addEventListener("click", clearCanvas);
+
+changeSizeButton.addEventListener("click", () => {
+	const newSize = promptGridSize();
+	if (newSize !== null) {
+		createGrid(newSize);
 	}
 });
 
-colorMode.addEventListener("click", () => {
-	currentColorMode = "controlled";
+colorPicker.addEventListener("click", () => {
+	activeColorMode = "picker";
 });
 
-rainbowMode.addEventListener("click", () => {
-	currentColorMode = "rainbow";
+rainbowButton.addEventListener("click", () => {
+	activeColorMode = "rainbow";
 });
 
-darkenMode.addEventListener("click", () => {
-	currentColorMode = "darken";
+darkenButton.addEventListener("click", () => {
+	activeColorMode = "darken";
 });
 
 createGrid(16);
